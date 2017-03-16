@@ -1,0 +1,46 @@
+# 
+'''Jterator module for substracting backgroung using manually given background level.
+'''
+import logging
+import collections
+import mahotas as mh
+import numpy as np
+
+logger = logging.getLogger(__name__)
+
+VERSION = '0.0.1'
+
+Output = collections.namedtuple('Output', ['subsimage', 'figure'])
+
+
+def main(image, background, plot=False):
+    '''Substracts background of an image by applying a given global background level.
+    Parameters
+    ----------
+    image: numpy.ndarray
+        image of arbitrary data type from which should be substracted
+    background: int
+        background level
+    plot: bool, optional
+        whether a plot should be generated (default: ``False``)
+    Returns
+    -------
+    jtmodules.background_manual.Output[Union[numpy.ndarray, str]]
+    '''
+    logger.info('substract background image at %d', background)
+    subsimage = image - background
+    logger.info('Result %d', subsimage)
+
+    if plot:
+        logger.info('create plot')
+        from jtlib import plotting
+        plots = [
+            plotting.create_intensity_image_plot(subsimage, 'ur')
+        ]
+        figure = plotting.create_figure(
+            plots, title='substracted at %s' % background
+        )
+    else:
+        figure = str()
+
+    return Output(subsimage, figure)
