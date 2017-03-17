@@ -28,8 +28,13 @@ def main(image, background, plot=False):
     jtmodules.background_manual.Output[Union[numpy.ndarray, str]]
     '''
     logger.info('substract background image at %d', background)
-    subsimage = image - background
-    logger.info('Result %d', subsimage)
+    #subsimage = image - background
+    image = image.astype(np.int16)
+    subsimage = np.subtract(image, background)
+    subsimage[subsimage < 0] = 0
+    #subsimage = np.subtract(image, background.astype(np.int16)).clip(0, 255).astype(np.uint8)
+    logger.info('Result %s', subsimage)
+    subsimage = subsimage.astype(np.uint16)
 
     if plot:
         logger.info('create plot')
