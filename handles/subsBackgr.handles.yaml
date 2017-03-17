@@ -21,7 +21,7 @@ input:
 output:
 
     - name: subsimage
-      type: Image
+      type: IntensityImage
       key: subsBackgr.image
       help: >
         Image with substracted background
